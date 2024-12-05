@@ -1,2 +1,2 @@
 # CAT-2
-Caption and Edit Anything in Video
+Caption Anything in Video: Object-centric Dense Video Captioning with Multimodal Controls
