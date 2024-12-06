@@ -44,7 +44,7 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Chao Huang](https://wikichao.github.io/) @ University of Rochester \
 - [Mingqian Feng](https://fmmarkmq.github.io/) @ University of Rochester \
 - [Junjia Guo](https://github.com/DouJiangTer) @ University of Rochester \
-- [Zhuo Liu]() @ University of Rochester \
+- [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester \
 - [Luchuan Song](https://songluchuan.github.io/) @ University of Rochester \
 - [Susan Liang](https://liangsusan-git.github.io/) @ University of Rochester \
 - [Bingjie Wang](https://github.com/bingjw72) @ University of Rochester \
