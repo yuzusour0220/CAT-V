@@ -47,7 +47,6 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester
 - [Luchuan Song](https://songluchuan.github.io/) @ University of Rochester
 - [Susan Liang](https://liangsusan-git.github.io/) @ University of Rochester
-- [Bingjie Wang](https://github.com/bingjw72) @ University of Rochester
 - [Daiki Shimada](https://scholar.google.co.jp/citations?user=1uAwouQAAAAJ) @ Sony Group Corporation
 - [Zeliang Zhang](https://zhangaipi.github.io/) @ University of Rochester
 - [Jiebo Luo](https://www.cs.rochester.edu/u/jluo/) @ University of Rochester
