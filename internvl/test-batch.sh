@@ -21,17 +21,16 @@ else
 fi
 
 # Variables - Please update these paths according to your setup
-MODEL_PATH="Qwen/Qwen2-VL-7B-Instruct"
+MODEL_PATH="OpenGVLab/InternVL2-8B"
 VIDEO_FOLDER="/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/samurai/samed_videos"
 
 # Define task files and frame numbers
 TASK_FILES=("example.json")
-FPSS=("2")
+FRAME_COUNTS=("8")
 
 # Loop through each task file and each frame count
-# Loop through each task file and each frame count
 for TASK in "${TASK_FILES[@]}"; do
-    for FPS in "${FPSS[@]}"; do
+    for FRAME_COUNT in "${FRAME_COUNTS[@]}"; do
         QA_FILE_PATH="/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/samurai/QAs/$TASK"
         
         # Execute the Python script with the provided arguments
@@ -40,8 +39,9 @@ for TASK in "${TASK_FILES[@]}"; do
             --QA_file_path "$QA_FILE_PATH" \
             --video_folder "$VIDEO_FOLDER" \
             --answers_output_folder "$ANSWERS_OUTPUT_FOLDER" \
-            --extract_frames_method "fps" \
-            --max_frames_num "$FPS" \
-            --frames_from "video"
+            --extract_frames_method "max_frames_num" \
+            --max_frames_num "$FRAME_COUNT" \
+            --frames_from "video" \
+            # --provide_boundaries
     done
 done

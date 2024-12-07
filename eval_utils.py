@@ -46,16 +46,17 @@ class QADataset(Dataset):
             data = json.load(file)
         
         # choices = "A"
-        message = [f'Please watch the video and discribe selected object that is highlighted by the colored bounding box.',
+        message = [f'Please watch the video and discribe ONLY the selected object that is highlighted by the colored bounding box.',
             # f'Each event is a descriptive and detailed sentences, e.g., attributes of X, X\'s environment, other objects that interact with X).',
-            # f'The subject of the sentences MUST be the selected object.',
+            f'The subject of the sentences MUST be the selected object.',
+            f'Start with Selected Object Name.'
             # f'There are timestamps like \"1.5s\" display in every frame.',
             # f'Your answer should be a list of events with timestamps.',
             # f'Please provide your answer in the following format:\n',
             # f'\"Start time 1: End time 1: Event 1 description\"\n\"Start time 2: End time 2: Event 2 description\"\n',
             # f'Please make sure merge the events that are closely related to each other. Do not provide the same event multiple times.'
             # f'Please make sure output sentences are coherent and related to the selected object.'
-            f'The description should be comprehensive and detailed, including the selected object\'s attributes, environment, and interactions with other objects.'
+            # f'The description should be comprehensive and detailed, including the selected object\'s attributes, status changes, and interactions with other objects.'
         ]
         message = ' '.join(message)
 
