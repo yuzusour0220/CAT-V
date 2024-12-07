@@ -43,6 +43,12 @@ If you find this work useful for your research or applications, please cite usin
 }
 ```
 
+## 🎮 Demo on Custom Video
+
+```bash
+python scripts/get_masks.py
+```
+
 ## 🙏 Acknowledgements
 We are grateful for the following awesome projects our CAT-2 arising from:
 
@@ -69,6 +75,7 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester
 - [Luchuan Song](https://songluchuan.github.io/) @ University of Rochester
 - [Susan Liang](https://liangsusan-git.github.io/) @ University of Rochester
+- [Ali Vosoughi](https://alivosoughi.com/) @ University of Rochester
 - [Daiki Shimada](https://scholar.google.co.jp/citations?user=1uAwouQAAAAJ) @ Sony Group Corporation
 - [Zeliang Zhang](https://zhangaipi.github.io/) @ University of Rochester
 - [Jiebo Luo](https://www.cs.rochester.edu/u/jluo/) @ University of Rochester
