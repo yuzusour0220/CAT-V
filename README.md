@@ -7,6 +7,28 @@ Official PyTorch implementation of the paper "Caption Anything in Video: Object-
 
 ## 🛠️ Getting Started
 
+1. Install the SAMURAI version of SAM 2 on a GPU machine using:
+
+```bash
+cd sam2
+pip install -e .
+pip install -e ".[notebooks]"
+
+```
+
+2. Install other requirements:
+
+```bash
+pip install matplotlib==3.7 tikzplotlib jpeg4py opencv-python lmdb pandas scipy loguru
+```
+
+3. Download checkpoints
+
+```bash
+cd checkpoints && \
+./download_ckpts.sh && \
+cd ..
+```
 
 
 ## 📖 Citation

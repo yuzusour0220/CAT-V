@@ -5,6 +5,7 @@ import numpy as np
 import cv2
 import torch
 import gc
+from tqdm import tqdm
 import sys
 sys.path.append("./sam2")
 from sam2.build_sam import build_sam2_video_predictor
@@ -77,7 +78,7 @@ def main(args):
         _, _, masks = predictor.add_new_points_or_box(state, box=bbox, frame_idx=0, obj_id=0)
         
 
-        for frame_idx, object_ids, masks in predictor.propagate_in_video(state):
+        for frame_idx, object_ids, masks in tqdm(predictor.propagate_in_video(state)):
             mask_to_vis = {}
             bbox_to_vis = {}
 
@@ -132,10 +133,10 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--video_path", required=True, help="Input video path or directory of frames.")
-    parser.add_argument("--txt_path", required=True, help="Path to ground truth text file.")
-    parser.add_argument("--model_path", default="sam2/checkpoints/sam2.1_hiera_base_plus.pt", help="Path to the model checkpoint.")
-    parser.add_argument("--video_output_path", default="./samed_videos/", help="Path to save the output video.")
+    parser.add_argument("--video_path", default="./assets/demo.mp4", help="Input video path or directory of frames.")
+    parser.add_argument("--txt_path", default="./assets/demo.txt", help="Path to ground truth text file.")
+    parser.add_argument("--model_path", default="./checkpoints/sam2.1_hiera_base_plus.pt", help="Path to the model checkpoint.")
+    parser.add_argument("--video_output_path", default="./results/", help="Path to save the output video.")
     parser.add_argument("--save_to_video", default=True, help="Save results to a video.")
     args = parser.parse_args()
     main(args)

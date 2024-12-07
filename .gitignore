@@ -10,6 +10,8 @@ outputs/*
 checkpoints/*.pt
 
 
+results/*.mp4
+
 # Python
 __pycache__
 *.pyc
