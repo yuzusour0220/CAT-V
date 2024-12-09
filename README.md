@@ -43,7 +43,7 @@ If you find this work useful for your research or applications, please cite usin
 ```bibtex
 @inproceedings{tang2024caption,
   title={Caption Anything in Video: Object-centric Dense Video Captioning with Multimodal Controls},
-  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Wang, Teng and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Wang, Bingjie and Shimada, Daiki and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
+  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Wang, Teng and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Wang, Bingjie and Shimada, Daiki and Vosoughi, Ali and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
   journel={arXiv},
   year={2024}
 }
