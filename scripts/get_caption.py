@@ -170,3 +170,5 @@ if __name__ == "__main__":
             })
     with open(answers_output_path, 'w', encoding='utf-8') as f:
         json.dump(answers, f, indent=4, ensure_ascii=False)
+    with open(args.final_json_path, 'w', encoding='utf-8') as f:
+        json.dump(answers, f, indent=4, ensure_ascii=False)

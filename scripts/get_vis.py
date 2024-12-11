@@ -1,8 +1,6 @@
 import cv2
 import json
-import os
 import sys
-import numpy as np
 from tqdm import tqdm
 
 def add_captions_to_video(video_input_path, json_path, video_output_path):
