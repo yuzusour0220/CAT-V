@@ -17,9 +17,10 @@ def load_txt(gt_path):
         gt = f.readlines()
     prompts = {}
     for fid, line in enumerate(gt):
-        x, y, w, h = map(float, line.split(','))
-        x, y, w, h = int(x), int(y), int(w), int(h)
-        prompts[fid] = ((x, y, x + w, y + h), 0)
+        x_min, y_min, x_max, y_max = line.strip().split(",")
+        # x, y, w, h = int(x), int(y), int(w), int(h)
+        x_min, y_min, x_max, y_max = int(x_min), int(y_min), int(x_max), int(y_max)
+        prompts[fid] = ((x_min, y_min, x_max, y_max), 0)
     return prompts
 
 def determine_model_cfg(model_path):
@@ -62,7 +63,6 @@ def main(args):
                 loaded_frames.append(frame)
             cap.release()
             height, width = loaded_frames[0].shape[:2]
-
             if len(loaded_frames) == 0:
                 raise ValueError("No frames were loaded from the video.")
 
