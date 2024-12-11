@@ -314,7 +314,7 @@ def basic_parser():
     fps_group.add_argument('--fps', type=int, help='Frames per second for extraction')
 
     parser.add_argument('--max_frames_num', type=int, help='Maximum number of frames to extract')
-
+    parser.add_argument('--final_json_path', type=str, help='Path to save the final json file')
     
     return parser
 

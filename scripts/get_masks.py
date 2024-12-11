@@ -7,7 +7,7 @@ import torch
 import gc
 from tqdm import tqdm
 import sys
-sys.path.append("./sam2")
+sys.path.append("./")
 from sam2.build_sam import build_sam2_video_predictor
 
 color = [(255, 0, 0)]
@@ -70,7 +70,7 @@ def main(args):
 
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(args.video_output_path+f"{osp.basename(args.video_path).split('.')[0]}_mask.mp4", fourcc, 30, (width, height))
+    out = cv2.VideoWriter(args.video_output_path+f"/{osp.basename(args.video_path).split('.')[0]}_mask.mp4", fourcc, 30, (width, height))
 
     with torch.inference_mode(), torch.autocast("cuda", dtype=torch.float16):
         state = predictor.init_state(frames_or_path, offload_video_to_cpu=True)
