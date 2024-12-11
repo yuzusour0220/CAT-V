@@ -16,3 +16,4 @@ decord
 imageio
 scenedetect
 SentencePiece
+gradio
