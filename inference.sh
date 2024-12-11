@@ -33,24 +33,24 @@ OBJECT_BBOX_PATH="$VIDEO_FOLDER$OBJECT_BBOX"
 
 START_TIME=$(date +%s)
 
-# echo -e "${GREEN}Step 1: Parsing...${RESET}"
+echo -e "${GREEN}Step 1: Parsing...${RESET}"
 
-# python -m scripts.get_boundary \
-#     --video_paths $VIDEO_PATH \
-#     --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
-#     --model_path $GET_BOUNDARY_MODEL_PATH
+python -m scripts.get_boundary \
+    --video_paths $VIDEO_PATH \
+    --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
+    --model_path $GET_BOUNDARY_MODEL_PATH
 
-# echo -e "${GREEN}Step 2: Segmentation...${RESET}"
+echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 
 
-# python scripts/get_masks.py \
-#     --video_path "$VIDEO_PATH" \
-#     --txt_path "$OBJECT_BBOX_PATH" \
-#     --model_path "$GET_MASK_MODEL_PATH" \
-#     --video_output_path "$OUTPUT_FOLDER" \
-#     --save_to_video True
+python scripts/get_masks.py \
+    --video_path "$VIDEO_PATH" \
+    --txt_path "$OBJECT_BBOX_PATH" \
+    --model_path "$GET_MASK_MODEL_PATH" \
+    --video_output_path "$OUTPUT_FOLDER" \
+    --save_to_video True
 
-# echo -e "${GREEN}Step 3: Captioning...${RESET}"
+echo -e "${GREEN}Step 3: Captioning...${RESET}"
 
 python scripts/get_caption.py \
     --model_path "$MODEL_PATH" \
