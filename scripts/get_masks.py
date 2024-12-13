@@ -79,6 +79,11 @@ def main(args):
         
 
         for frame_idx, object_ids, masks in tqdm(predictor.propagate_in_video(state)):
+            # if frame_idx >= len(loaded_frames):
+            #     print(f"Frame index {frame_idx} out of range. Skipping.")
+            #     continue
+
+            # img = loaded_frames[frame_idx]
             mask_to_vis = {}
             bbox_to_vis = {}
 
@@ -133,7 +138,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--video_path", default="./assets/demo.mp4", help="Input video path or directory of frames.")
+    parser.add_argument("--video_path", default="./assets/demo_short.mp4", help="Input video path or directory of frames.")
     parser.add_argument("--txt_path", default="./assets/demo.txt", help="Path to ground truth text file.")
     parser.add_argument("--model_path", default="./checkpoints/sam2.1_hiera_base_plus.pt", help="Path to the model checkpoint.")
     parser.add_argument("--video_output_path", default="./results/", help="Path to save the output video.")

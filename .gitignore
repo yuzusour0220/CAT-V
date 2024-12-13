@@ -49,6 +49,7 @@ serve_images/
 data/
 dataset/
 datasets/
+results/
 
 # training folder
 wandb
