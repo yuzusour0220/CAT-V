@@ -41,7 +41,7 @@ If you find this work useful for your research or applications, please cite usin
 ```bibtex
 @inproceedings{tang2024caption,
   title={Caption Anything in Video: Object-centric Dense Video Captioning with Multimodal Controls},
-  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Wang, Teng and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Wang, Bingjie and Shimada, Daiki and Vosoughi, Ali and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
+  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Liu, Pinxin and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Shimada, Daiki and Vosoughi, Ali and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
   journel={arXiv},
   year={2024}
 }
@@ -70,7 +70,7 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Hang Hua](https://hanghuacs.notion.site/Hang-Hua-151c5b68f62980e8884febf1b5c1d4a9) @ University of Rochester
 - [Yunzhong Xiao](https://shawn-yzxiao.github.io/) @ Carnegie Mellon University
 - [Yizhi Song](https://song630.github.io/yizhisong.github.io/) @ Purdue University
-- [Teng Wang](http://ttengwang.com/) @ The University of Hong Kong
+- [Pinxin Liu](https://andypinxinliu.github.io/) @ University of Rochester
 - [Mingqian Feng](https://fmmarkmq.github.io/) @ University of Rochester
 - [Junjia Guo](https://doujiangter.github.io/JunjiaGuo.github.io/) @ University of Rochester
 - [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester
