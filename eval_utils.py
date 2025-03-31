@@ -46,17 +46,19 @@ class QADataset(Dataset):
             data = json.load(file)
         
         # choices = "A"
-        message = [f'Please watch the video and discribe ONLY the selected object that is highlighted by the colored bounding box.',
-            # f'Each event is a descriptive and detailed sentences, e.g., attributes of X, X\'s environment, other objects that interact with X).',
-            f'The subject of the sentences MUST be the selected object.',
-            f'Start with Selected Object Name.'
-            # f'There are timestamps like \"1.5s\" display in every frame.',
-            # f'Your answer should be a list of events with timestamps.',
-            # f'Please provide your answer in the following format:\n',
-            # f'\"Start time 1: End time 1: Event 1 description\"\n\"Start time 2: End time 2: Event 2 description\"\n',
-            # f'Please make sure merge the events that are closely related to each other. Do not provide the same event multiple times.'
-            # f'Please make sure output sentences are coherent and related to the selected object.'
-            # f'The description should be comprehensive and detailed, including the selected object\'s attributes, status changes, and interactions with other objects.'
+        message = [
+            "Above are the event captions given by the user, whose timestamps are very accurate but the subjects of the sentences are not necessarily what we want to highlight.",
+            "Please pay attention to the object highlighted (HO) by colored bounding box and blue mask in the video frames, and generate accurate object-centric caption for the HO.",
+            "Please make sure in object-centric paragraph caption, the sentences should be detailed and specific, and the subjects of all sentences **MUST be \"HO\"**.",
+            "Please follow the format:\n",
+            "HO: ...\n",
+            "HO's itself attributes: ...\n",
+            "All actions done by HO: ...\n",
+            "All statuses of HO: ...\n",
+            "All other objects interacted with HO: ...\n",
+            "All environments/backgrounds of HO: ...\n",
+            "All events related to HO: ...\n",
+            "Final object-centric paragraph caption: The HO is [attributes], [environment]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. The OH's [final status].",
         ]
         message = ' '.join(message)
 
