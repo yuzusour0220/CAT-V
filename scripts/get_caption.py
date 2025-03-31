@@ -129,45 +129,97 @@ if __name__ == "__main__":
     tokenizer = AutoTokenizer.from_pretrained(args.model_path, trust_remote_code=True, use_fast=False)
     generation_config = dict(max_new_tokens=1024, do_sample=False)
     answers = []
+    event_list = []
+    # duration = 0
     for idx, (QA_data, _) in enumerate(tqdm(dataloader)):
-        try:
-            final_question, video_path, short_answer, \
-                video, segment, question = unpack_QAs(QA_data)
-            print(video)
-            if args.provide_boundaries:
-                pixel_values, num_patches_list = load_video(video_path, bound=segment, num_segments=args.max_frames_num, max_num=1)
-            else:
-                pixel_values, num_patches_list = load_video(video_path, num_segments=args.max_frames_num, max_num=1)
-            # exit()
-            pixel_values = pixel_values.to(torch.bfloat16).cuda()
-            video_prefix = ''.join([f'Frame{i+1}: <image>\n' for i in range(len(num_patches_list))])
-            question_tmp = video_prefix + final_question
-            # Frame1: <image>\nFrame2: <image>\n...\nFrame8: <image>\n{question}
-            with torch.inference_mode():
-                response = model.chat(tokenizer, pixel_values, question_tmp, generation_config,
-                                num_patches_list=num_patches_list)
-            print(response)
-            answers.append({
-                "video": video,
-                "segment": segment,
-                "question": question,
-                # "options": options, 
-                # "task_class": task_class, 
-                "short_answer": short_answer,
-                "model_answer": response           
-            })
+        final_question, video_path, short_answer, video, segment, question = unpack_QAs(QA_data)
+        event = f'From {segment[0]} to {segment[1]}s, {short_answer}'
+        event_list.append(event)
+        # duration = max(duration, float(segment[1]))
 
-        except Exception as e:
-            print(f"Error encountered at idx {idx}: {e}")
-            answers.append({
-                "video": video,
-                "segment": segment,
-                "question": question,
-                # "options": options, 
-                # "task_class": task_class, 
-                "short_answer": short_answer,
-                "model_answer": '<error_processing>'           
-            })
+    # print(event_list)
+    pixel_values, num_patches_list = load_video(video_path, num_segments=args.max_frames_num, max_num=1)
+    n_frames = len(num_patches_list)
+    pixel_values = pixel_values.to(torch.bfloat16).cuda()
+    video_prefix = ''.join([f'Frame{i+1}: <image>\n' for i in range(len(num_patches_list))])
+    video_prefix += ''.join([f'{event}\n' for event in event_list])
+    question_tmp = video_prefix + final_question
+    print(question_tmp)
+    try:
+        with torch.inference_mode():
+            response = model.chat(tokenizer, pixel_values, question_tmp, generation_config)
+        print(response)
+        answers.append({
+            "video": video,
+            "segment": segment,
+            "question": question,
+            # "options": options, 
+            # "task_class": task_class, 
+            "short_answer": short_answer,
+            "model_answer": response           
+        })
+    except Exception as e:
+        print(f"Error encountered at idx {idx}: {e}")
+        answers.append({
+            "video": video,
+            "segment": segment,
+            "question": question,
+            # "options": options, 
+            # "task_class": task_class, 
+            "short_answer": short_answer,
+            "model_answer": '<error_processing>'           
+        })
+    exit()
+
+
+
+    # for idx, (QA_data, _) in enumerate(tqdm(dataloader)):
+    #     # print(QA_data)
+    #     # continue
+    #     try:
+    #         final_question, video_path, short_answer, \
+    #             video, segment, question = unpack_QAs(QA_data)
+    #         # print(video)
+    #         # print(segment, question)
+    #         print(f'From {segment[0]} to {segment[1]}s,', short_answer)
+    #         print(final_question)
+    #         if args.provide_boundaries:
+    #             pixel_values, num_patches_list = load_video(video_path, bound=segment, num_segments=args.max_frames_num, max_num=1)
+    #         else:
+    #             pixel_values, num_patches_list = load_video(video_path, num_segments=args.max_frames_num, max_num=1)
+    #         # exit()
+    #         print(num_patches_list)
+    #         exit()
+    #         pixel_values = pixel_values.to(torch.bfloat16).cuda()
+    #         video_prefix = ''.join([f'Frame{i+1}: <image>\n' for i in range(len(num_patches_list))])
+    #         question_tmp = video_prefix + final_question
+    #         # Frame1: <image>\nFrame2: <image>\n...\nFrame8: <image>\n{question}
+    #         with torch.inference_mode():
+    #             response = model.chat(tokenizer, pixel_values, question_tmp, generation_config,
+    #                             num_patches_list=num_patches_list)
+    #         print(response)
+    #         answers.append({
+    #             "video": video,
+    #             "segment": segment,
+    #             "question": question,
+    #             # "options": options, 
+    #             # "task_class": task_class, 
+    #             "short_answer": short_answer,
+    #             "model_answer": response           
+    #         })
+
+    #     except Exception as e:
+    #         print(f"Error encountered at idx {idx}: {e}")
+    #         answers.append({
+    #             "video": video,
+    #             "segment": segment,
+    #             "question": question,
+    #             # "options": options, 
+    #             # "task_class": task_class, 
+    #             "short_answer": short_answer,
+    #             "model_answer": '<error_processing>'           
+    #         })
+    # exit()
     with open(answers_output_path, 'w', encoding='utf-8') as f:
         json.dump(answers, f, indent=4, ensure_ascii=False)
     with open(args.final_json_path, 'w', encoding='utf-8') as f:

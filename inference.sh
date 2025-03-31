@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # conda activate /home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/env/cat-2
-# export TRANSFORMERS_CACHE=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/transformers_cache
-# export TORCH_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/torch_home
-# export HF_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/hf_home
-# export PIP_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/pip
-# export OPENAI_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/openai
+export TRANSFORMERS_CACHE=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/transformers_cache
+export TORCH_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/torch_home
+export HF_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/hf_home
+export PIP_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/pip
+export OPENAI_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/openai
 
 set -e
 
 GREEN="\033[32m"
 RESET="\033[0m"
-FRAME_COUNT=16
+FRAME_COUNT=32
 OUTPUT_FOLDER="./results"
 mkdir -p $OUTPUT_FOLDER
-MODEL_PATH="OpenGVLab/InternVL2-8B"
+MODEL_PATH="OpenGVLab/InternVL2_5-8B-MPO" # "OpenGVLab/InternVL2-8B"
 GET_BOUNDARY_MODEL_PATH="Yongxin-Guo/trace-uni"
 GET_MASK_MODEL_PATH="./checkpoints/sam2.1_hiera_base_plus.pt"
 
@@ -35,20 +35,20 @@ START_TIME=$(date +%s)
 
 echo -e "${GREEN}Step 1: Parsing...${RESET}"
 
-python -m scripts.get_boundary \
-    --video_paths $VIDEO_PATH \
-    --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
-    --model_path $GET_BOUNDARY_MODEL_PATH
+# python -m scripts.get_boundary \
+#     --video_paths $VIDEO_PATH \
+#     --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
+#     --model_path $GET_BOUNDARY_MODEL_PATH
 
 echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 
 
-python scripts/get_masks.py \
-    --video_path "$VIDEO_PATH" \
-    --txt_path "$OBJECT_BBOX_PATH" \
-    --model_path "$GET_MASK_MODEL_PATH" \
-    --video_output_path "$OUTPUT_FOLDER" \
-    --save_to_video True
+# python scripts/get_masks.py \
+#     --video_path "$VIDEO_PATH" \
+#     --txt_path "$OBJECT_BBOX_PATH" \
+#     --model_path "$GET_MASK_MODEL_PATH" \
+#     --video_output_path "$OUTPUT_FOLDER" \
+#     --save_to_video True
 
 echo -e "${GREEN}Step 3: Captioning...${RESET}"
 
@@ -65,7 +65,6 @@ python scripts/get_caption.py \
 
 echo -e "${GREEN}Step 3: Generate visualizations...${RESET}"
 
-python scripts/get_vis.py "$MASKED_VIDEO_PATH" "$FINAL_JSON_PATH" "$FINAL_VIDEO_PATH"
+# python scripts/get_vis.py "$MASKED_VIDEO_PATH" "$FINAL_JSON_PATH" "$FINAL_VIDEO_PATH"
 
-# echo "Completed in $(($(date +%s) - START_TIME)) seconds."
 echo -e "${GREEN}Completed in $(($(date +%s) - START_TIME)) seconds.${RESET}"
