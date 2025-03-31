@@ -21,12 +21,12 @@ else
 fi
 
 # Variables - Please update these paths according to your setup
-MODEL_PATH="OpenGVLab/InternVL2-8B"
+MODEL_PATH="OpenGVLab/InternVL2_5-8B-MPO-AWQ" #"OpenGVLab/InternVL2-8B"
 VIDEO_FOLDER="/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/samurai/samed_videos"
 
 # Define task files and frame numbers
 TASK_FILES=("example.json")
-FRAME_COUNTS=("8")
+FRAME_COUNTS=("16")
 
 # Loop through each task file and each frame count
 for TASK in "${TASK_FILES[@]}"; do
