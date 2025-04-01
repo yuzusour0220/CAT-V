@@ -169,7 +169,7 @@ if __name__ == "__main__":
             "short_answer": short_answer,
             "model_answer": '<error_processing>'           
         })
-    exit()
+    # exit()
 
 
 
