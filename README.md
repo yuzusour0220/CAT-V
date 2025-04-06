@@ -74,7 +74,7 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester
 - [Luchuan Song](https://songluchuan.github.io/) @ University of Rochester
 - [Ali Vosoughi](https://alivosoughi.com/) @ University of Rochester
-- [Jinxi He](https://www.linkedin.com/in/jinxi-gin-he-642b57232/) @ University of Rochester
+- [Jinxi He](https://gingin520.github.io/) @ University of Rochester
 - [Liu He](https://arking1995.github.io/) @ Purdue University
 - [Zeliang Zhang](https://zhangaipi.github.io/) @ University of Rochester
 - [Jiebo Luo](https://www.cs.rochester.edu/u/jluo/) @ University of Rochester
