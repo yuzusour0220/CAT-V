@@ -1,5 +1,5 @@
-# CAT-2
-Official PyTorch implementation of the paper "Caption Anything in Video: Object-centric Dense Video Captioning with Multimodal Controls"
+# CAT-V
+Official PyTorch implementation of the paper "Caption Anything in Video: Fine-grained Object-centric Captioning via Spatiotemporal Multimodal Prompting"
 
 ## 🚀 Updates
 
@@ -39,24 +39,22 @@ bash inference.sh
 If you find this work useful for your research or applications, please cite using this BibTeX:
 
 ```bibtex
-@inproceedings{tang2024caption,
-  title={Caption Anything in Video: Object-centric Dense Video Captioning with Multimodal Controls},
-  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Liu, Pinxin and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Shimada, Daiki and Vosoughi, Ali and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
+@inproceedings{tang2025cat-v,
+  title={Caption Anything in Video: Fine-grained Object-centric Captioning via Spatiotemporal Multimodal Prompting},
+  author={Tang, Yunlong and Bi, Jing and Hua, Hang and Xiao, Yunzhong and Song, Yizhi and Liu, Pinxin and Huang, Chao and Feng, Mingqian and Guo, Junjia and Liu, Zhuo and Song, Luchuan and Liang, Susan and Shimada, Daiki and Vosoughi, Ali and He, Jinxi and He, Liu and Zhang, Zeliang and Luo, Jiebo and Xu, Chenliang},
   journel={arXiv},
-  year={2024}
+  year={2025}
 }
 ```
 
 
 ## 🙏 Acknowledgements
-We are grateful for the following awesome projects our CAT-2 arising from:
+We are grateful for the following awesome projects our CAT-V arising from:
 
-- LLaVA: Large Language and Vision Assistant
-- FastChat: An Open Platform for Training, Serving, and Evaluating Large Language Model based Chatbots
-- Video-ChatGPT: Towards Detailed Video Understanding via Large Vision and Language Models
-- LLaMA: Open and Efficient Foundation Language Models
-- Vid2seq: Large-Scale Pretraining of a Visual Language Model for Dense Video Captioning
-- InternVid: A Large-scale Video-Text dataset
+- SAM 2: 
+- SAMURAI:
+- TRACE-uni:
+- InternVL-2.5
 
 
 ## 👩‍💻 Contributors
@@ -76,6 +74,8 @@ Our project wouldn't be possible without the contributions of these amazing peop
 - [Zhuo Liu](https://joeliuz6.github.io/) @ University of Rochester
 - [Luchuan Song](https://songluchuan.github.io/) @ University of Rochester
 - [Ali Vosoughi](https://alivosoughi.com/) @ University of Rochester
+- [Jinxi He](https://www.linkedin.com/in/jinxi-gin-he-642b57232/) @ University of Rochester
+- [Liu He](https://arking1995.github.io/) @ Purdue University
 - [Zeliang Zhang](https://zhangaipi.github.io/) @ University of Rochester
 - [Jiebo Luo](https://www.cs.rochester.edu/u/jluo/) @ University of Rochester
 - [Chenliang Xu](https://www.cs.rochester.edu/~cxu22/index.html) @ University of Rochester
