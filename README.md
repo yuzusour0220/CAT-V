@@ -51,9 +51,9 @@ If you find this work useful for your research or applications, please cite usin
 ## 🙏 Acknowledgements
 We are grateful for the following awesome projects our CAT-V arising from:
 
-- SAM 2: 
-- SAMURAI:
-- TRACE-uni:
+- SAM 2
+- SAMURAI
+- TRACE-uni
 - InternVL-2.5
 
 
