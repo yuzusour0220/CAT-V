@@ -51,12 +51,17 @@ If you find this work useful for your research or applications, please cite usin
 
 
 ## 🙏 Acknowledgements
-We are grateful for the following awesome projects our CAT-V arising from:
+This work was supported by Sony Group Corporation. We would like to thank Sayaka Nakamura and Jerry Jun Yokono for their insightful discussion.
 
-- SAM 2
-- SAMURAI
-- TRACE-uni
-- InternVL-2.5
+We are also grateful for the following awesome projects our CAT-V arising from:
+
+- [Caption Anything](https://github.com/ttengwang/Caption-Anything)
+- [SAM 2](https://github.com/facebookresearch/sam2)
+- [SAMURAI](https://github.com/yangchris11/samurai)
+- [TRACE-uni](https://github.com/gyxxyg/TRACE)
+- [VideoLLaMA2](https://github.com/DAMO-NLP-SG/VideoLLaMA2)
+- [Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL)
+- [InternVL-2.5](https://internvl.github.io/blog/2024-12-05-InternVL-2.5/)
 
 
 ## 👩‍💻 Contributors
