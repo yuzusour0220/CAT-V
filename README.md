@@ -82,6 +82,6 @@ Our project wouldn't be possible without the contributions of these amazing peop
 
 
 
-<a href="https://github.com/yunlong10/CAT-2/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=yunlong10/CAT-2" />
+<a href="https://github.com/yunlong10/CAT-V/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=yunlong10/CAT-V" />
 </a>
