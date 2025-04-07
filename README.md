@@ -85,3 +85,7 @@ Our project wouldn't be possible without the contributions of these amazing peop
 <a href="https://github.com/yunlong10/CAT-V/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=yunlong10/CAT-V" />
 </a>
+
+### 🌟 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=yunlong10/CAT-V&type=Date)](https://star-history.com/#yunlong10/CAT-V&Date)
