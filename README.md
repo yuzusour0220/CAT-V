@@ -22,7 +22,7 @@ conda activate cat2
 pip install -e .
 ```
 
-3. Download checkpoints
+3. Download checkpoints:
 
 ```bash
 cd checkpoints && \
