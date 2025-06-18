@@ -1,4 +1,7 @@
-# CAT-V
+![Cover](assets/cover.png)
+
+
+
 Official PyTorch implementation of [Caption Anything in Video: Fine-grained Object-centric Captioning via Spatiotemporal Multimodal Prompting](https://arxiv.org/abs/2504.05541)
 
 ![cat-v-framework](assets/cat-v-framework.png)
