@@ -10,6 +10,8 @@ Official PyTorch implementation of [Caption Anything in Video: Fine-grained Obje
 
 ## 🕹️ Demo
 
+YouTube: [https://youtu.be/2eiPVKXEoxw](https://youtu.be/2eiPVKXEoxw)
+
 ## 🛠️ Getting Started
 
 1. Set up a conda environment (python>= 3.10) using:
