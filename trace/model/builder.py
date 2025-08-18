@@ -144,7 +144,16 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
         vision_tower = model.get_vision_tower()
         if not vision_tower.is_loaded:
             vision_tower.load_model()
-        vision_tower.to(device=device, dtype=torch.float16)
+
+        # If the vision tower parameters are still on the meta device after
+        # loading, allocate empty weights on the target device and reload the
+        # CLIP weights to avoid meta tensor errors during inference.
+        if any(p.is_meta for p in vision_tower.vision_tower.parameters()):
+            vision_tower.to_empty(device=device, dtype=torch.float16)
+            vision_tower.load_model()
+        else:
+            vision_tower.to(device=device, dtype=torch.float16)
+
         # NOTE: Trace adopts the same processor for processing image and video.
         processor = vision_tower.image_processor
 
