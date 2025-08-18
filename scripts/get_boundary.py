@@ -21,8 +21,7 @@ def inference(args):
     # 1. Initialize the model.
     model_path = args.model_path
     model_name = get_model_name_from_path(model_path)
-    tokenizer, model, processor, context_len = load_pretrained_model(model_path, None, model_name)
-    model = model.to('cuda')
+    tokenizer, model, processor, context_len = load_pretrained_model(model_path, None, model_name, device='cuda', device_map={'': 'cuda:0'})
     conv_mode = 'llama_2'
 
     # 2. Visual preprocess (load & transform image or video).
