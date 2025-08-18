@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# conda activate /home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/env/cat-2
-export TRANSFORMERS_CACHE=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/transformers_cache
-export TORCH_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/torch_home
-export HF_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/hf_home
-export PIP_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/pip
-export OPENAI_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/openai
+# # conda activate /home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/env/cat-2
+# export TRANSFORMERS_CACHE=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/transformers_cache
+# export TORCH_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/torch_home
+# export HF_HOME=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/hf_home
+# export PIP_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/pip
+# export OPENAI_CACHE_DIR=/home/cxu-serve/p62/ytang37/projects/Caption-Anything-2/cache/openai
 
 set -e
 
@@ -35,20 +35,20 @@ START_TIME=$(date +%s)
 
 echo -e "${GREEN}Step 1: Parsing...${RESET}"
 
-# python -m scripts.get_boundary \
-#     --video_paths $VIDEO_PATH \
-#     --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
-#     --model_path $GET_BOUNDARY_MODEL_PATH
+python -m scripts.get_boundary \
+    --video_paths $VIDEO_PATH \
+    --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
+    --model_path $GET_BOUNDARY_MODEL_PATH
 
 echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 
 
-# python scripts/get_masks.py \
-#     --video_path "$VIDEO_PATH" \
-#     --txt_path "$OBJECT_BBOX_PATH" \
-#     --model_path "$GET_MASK_MODEL_PATH" \
-#     --video_output_path "$OUTPUT_FOLDER" \
-#     --save_to_video True
+python scripts/get_masks.py \
+    --video_path "$VIDEO_PATH" \
+    --txt_path "$OBJECT_BBOX_PATH" \
+    --model_path "$GET_MASK_MODEL_PATH" \
+    --video_output_path "$OUTPUT_FOLDER" \
+    --save_to_video True
 
 echo -e "${GREEN}Step 3: Captioning...${RESET}"
 
