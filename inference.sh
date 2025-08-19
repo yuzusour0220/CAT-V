@@ -38,7 +38,9 @@ echo -e "${GREEN}Step 1: Parsing...${RESET}"
 python -m scripts.get_boundary \
     --video_paths $VIDEO_PATH \
     --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
-    --model_path $GET_BOUNDARY_MODEL_PATH
+    --model_path $GET_BOUNDARY_MODEL_PATH \
+    --load_4bit \
+    --device_map auto
 
 echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 

@@ -17,3 +17,4 @@ imageio
 scenedetect
 SentencePiece
 gradio
+bitsandbytes
