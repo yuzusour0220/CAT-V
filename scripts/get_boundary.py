@@ -26,12 +26,19 @@ def inference(args):
 
     # 2. Visual preprocess (load & transform image or video).
     if modal_list[0] == 'video':
-        tensor, video_timestamps = process_video(paths[0], processor, model.config.image_aspect_ratio, num_frames=64)
+        tensor, video_timestamps = process_video(
+            paths[0],
+            processor,
+            model.config.image_aspect_ratio,
+            num_frames=args.num_frames,
+        )
         tensor = tensor.to(dtype=torch.float16, device='cuda', non_blocking=True)
         default_mm_token = DEFAULT_MMODAL_TOKEN["VIDEO"]
         modal_token_index = MMODAL_TOKEN_INDEX["VIDEO"]
     else:
-        tensor = process_image(paths[0], processor, model.config.image_aspect_ratio)[0].to(dtype=torch.float16, device='cuda', non_blocking=True)
+        tensor = process_image(paths[0], processor, model.config.image_aspect_ratio)[0].to(
+            dtype=torch.float16, device='cuda', non_blocking=True
+        )
         default_mm_token = DEFAULT_MMODAL_TOKEN["IMAGE"]
         modal_token_index = MMODAL_TOKEN_INDEX["IMAGE"]
 
@@ -142,6 +149,12 @@ if __name__ == "__main__":
     parser.add_argument("--video_paths", nargs='+', required=True, help="Paths to the input video files.")
     parser.add_argument("--questions", nargs='+', required=True, help="Questions for video inference.")
     parser.add_argument("--model_path", required=True, help="Path to the pretrained model.")
+    parser.add_argument(
+        "--num_frames",
+        type=int,
+        default=32,
+        help="Number of frames to sample from the video.",
+    )
     args = parser.parse_args()
 
     inference(args)
