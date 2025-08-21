@@ -9,7 +9,7 @@ _C.*
 outputs/*
 checkpoints/*.pt
 
-
+*.sif
 results/*.mp4
 
 # Python
