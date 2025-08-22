@@ -11,7 +11,9 @@ class CLIPVisionTower(nn.Module):
 
         self.is_loaded = False
 
-        self.vision_tower_name = 'openai/clip-vit-large-patch14-336'
+        # Use a smaller CLIP backbone to reduce computational cost.
+        # "openai/clip-vit-base-patch32" expects 224x224 inputs.
+        self.vision_tower_name = 'openai/clip-vit-base-patch32'
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
 
