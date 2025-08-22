@@ -8,7 +8,13 @@ import argparse
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from trace.conversation import conv_templates, SeparatorStyle
 from trace.constants import DEFAULT_MMODAL_TOKEN, MMODAL_TOKEN_INDEX
-from trace.mm_utils import get_model_name_from_path, tokenizer_MMODAL_token_all, process_video, process_image, KeywordsStoppingCriteria
+from trace.mm_utils import (
+    get_model_name_from_path,
+    tokenizer_MMODAL_token_all,
+    process_video,
+    process_image,
+    KeywordsStoppingCriteria,
+)
 from trace.model.builder import load_pretrained_model
 
 
@@ -21,7 +27,24 @@ def inference(args):
     # 1. Initialize the model.
     model_path = args.model_path
     model_name = get_model_name_from_path(model_path)
-    tokenizer, model, processor, context_len = load_pretrained_model(model_path, None, model_name, device='cuda', device_map={'': 'cuda:0'})
+
+    if args.load_4bit or args.load_8bit:
+        try:
+            import bitsandbytes  # noqa: F401
+        except Exception as exc:  # pragma: no cover - runtime check
+            raise ImportError(
+                "bitsandbytes is required for 4-bit or 8-bit quantization."
+            ) from exc
+
+    tokenizer, model, processor, context_len = load_pretrained_model(
+        model_path,
+        None,
+        model_name,
+        load_4bit=args.load_4bit,
+        load_8bit=args.load_8bit,
+        device=args.device,
+        device_map=args.device_map,
+    )
     conv_mode = 'llama_2'
 
     # 2. Visual preprocess (load & transform image or video).
@@ -142,6 +165,10 @@ if __name__ == "__main__":
     parser.add_argument("--video_paths", nargs='+', required=True, help="Paths to the input video files.")
     parser.add_argument("--questions", nargs='+', required=True, help="Questions for video inference.")
     parser.add_argument("--model_path", required=True, help="Path to the pretrained model.")
+    parser.add_argument("--device", default="cuda", help="Device to run inference on.")
+    parser.add_argument("--device_map", default="auto", help="Device map for model loading.")
+    parser.add_argument("--load_8bit", action="store_true", help="Load the model in 8-bit mode.")
+    parser.add_argument("--load_4bit", action="store_true", help="Load the model in 4-bit mode.")
     args = parser.parse_args()
 
     inference(args)
