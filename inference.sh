@@ -17,15 +17,15 @@ mkdir -p $OUTPUT_FOLDER
 MODEL_PATH="OpenGVLab/InternVL2_5-8B-MPO" # "OpenGVLab/InternVL2-8B"
 GET_BOUNDARY_MODEL_PATH="Yongxin-Guo/trace-uni"
 GET_MASK_MODEL_PATH="./checkpoints/sam2.1_hiera_base_plus.pt"
-
+CUDA_VISIBLE_DEVICES=0
 ############################################################################################################
-VIDEO_NAME="demo.mp4"
+VIDEO_NAME="intact.mp4"
 VIDEO_FOLDER="./assets/"
-OBJECT_BBOX="demo.txt"
-QA_FILE_PATH="$OUTPUT_FOLDER/demo_boundary.json"
-FINAL_JSON_PATH="$OUTPUT_FOLDER/demo_boundary_caption.json"
-FINAL_VIDEO_PATH="$OUTPUT_FOLDER/demo_boundary_caption.mp4"
-MASKED_VIDEO_PATH="$OUTPUT_FOLDER/demo_mask.mp4"
+OBJECT_BBOX="intact.txt"
+QA_FILE_PATH="$OUTPUT_FOLDER/intact_boundary.json"
+FINAL_JSON_PATH="$OUTPUT_FOLDER/intact_boundary_caption.json"
+FINAL_VIDEO_PATH="$OUTPUT_FOLDER/intact_boundary_caption.mp4"
+MASKED_VIDEO_PATH="$OUTPUT_FOLDER/intact_mask.mp4"
 ############################################################################################################
 
 VIDEO_PATH="$VIDEO_FOLDER$VIDEO_NAME"
@@ -33,6 +33,7 @@ OBJECT_BBOX_PATH="$VIDEO_FOLDER$OBJECT_BBOX"
 
 START_TIME=$(date +%s)
 
+# まずdense captioning
 echo -e "${GREEN}Step 1: Parsing...${RESET}"
 
 python -m scripts.get_boundary \
