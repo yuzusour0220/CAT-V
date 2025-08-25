@@ -57,65 +57,65 @@ def run_inference_pipeline(video_path, bbox):
     ret, frame = video.read()
     h,w = frame.shape[:2]
     print(h,w)
-    video.release()
-    bbox = [int(bbox[0]*w), int(bbox[1]*h), int(bbox[2]*w), int(bbox[3]*h)]
-    print(bbox)
-    object_bbox_path = Path(CONFIG['output_folder'])/f"{os.path.splitext(video_name)[0]}_bbox.txt"
-    with open(object_bbox_path, "w") as f:
-        f.write(','.join(map(str, bbox)))
-    commands = [
-        # Step 1: Parsing/Boundary Detection
-        f"python -m scripts.get_boundary "
-        f"--video_paths {video_path} "
-        f"--questions 'Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences.' "
-        f"--model_path {CONFIG['get_boundary_model_path']}",
-    ]
+    # video.release()
+    # bbox = [int(bbox[0]*w), int(bbox[1]*h), int(bbox[2]*w), int(bbox[3]*h)]
+    # print(bbox)
+    # object_bbox_path = Path(CONFIG['output_folder'])/f"{os.path.splitext(video_name)[0]}_bbox.txt"
+    # with open(object_bbox_path, "w") as f:
+    #     f.write(','.join(map(str, bbox)))
+    # commands = [
+    #     # Step 1: Parsing/Boundary Detection
+    #     f"python -m scripts.get_boundary "
+    #     f"--video_paths {video_path} "
+    #     f"--questions 'Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences.' "
+    #     f"--model_path {CONFIG['get_boundary_model_path']}",
+    # ]
 
 
-    commands.append(
-        f"python scripts/get_masks.py "
-        f"--video_path {video_path} "
-        f"--txt_path {object_bbox_path} "
-        f"--model_path {CONFIG['get_mask_model_path']} "
-        f"--video_output_path {CONFIG['output_folder']} "
-        f"--save_to_video True"
-    )
+    # commands.append(
+    #     f"python scripts/get_masks.py "
+    #     f"--video_path {video_path} "
+    #     f"--txt_path {object_bbox_path} "
+    #     f"--model_path {CONFIG['get_mask_model_path']} "
+    #     f"--video_output_path {CONFIG['output_folder']} "
+    #     f"--save_to_video True"
+    # )
 
-    # Step 2: Captioning
-    commands.append(
-        f"python scripts/get_caption.py "
-        f"--model_path {CONFIG['model_path']} "
-        f"--QA_file_path {qa_file_path} "
-        f"--video_folder {CONFIG['output_folder']} "
-        f"--answers_output_folder {CONFIG['output_folder']} "
-        f"--extract_frames_method max_frames_num "
-        f"--max_frames_num {CONFIG['frame_count']} "
-        f"--frames_from video "
-        f"--final_json_path {final_json_path} "
-        f"--provide_boundaries"
-    )
+    # # Step 2: Captioning
+    # commands.append(
+    #     f"python scripts/get_caption.py "
+    #     f"--model_path {CONFIG['model_path']} "
+    #     f"--QA_file_path {qa_file_path} "
+    #     f"--video_folder {CONFIG['output_folder']} "
+    #     f"--answers_output_folder {CONFIG['output_folder']} "
+    #     f"--extract_frames_method max_frames_num "
+    #     f"--max_frames_num {CONFIG['frame_count']} "
+    #     f"--frames_from video "
+    #     f"--final_json_path {final_json_path} "
+    #     f"--provide_boundaries"
+    # )
 
-    # Step 3: Generate Visualization
-    commands.append(
-        f"python scripts/get_vis.py {masked_video_path if object_bbox_path else video_path} {final_json_path} {final_video_path}"
-    )
+    # # Step 3: Generate Visualization
+    # commands.append(
+    #     f"python scripts/get_vis.py {masked_video_path if object_bbox_path else video_path} {final_json_path} {final_video_path}"
+    # )
 
-    # Execute commands
-    for cmd in commands:
-        try:
-            subprocess.run(cmd, shell=True, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error in command: {cmd}")
-            print(f"Error details: {e}")
-            return None
+    # # Execute commands
+    # for cmd in commands:
+    #     try:
+    #         subprocess.run(cmd, shell=True, check=True)
+    #     except subprocess.CalledProcessError as e:
+    #         print(f"Error in command: {cmd}")
+    #         print(f"Error details: {e}")
+    #         return None
 
-    try:
-        with open(final_json_path, "r") as f:
-            results = json.load(f)
-        return {"captions": results, "final_video": final_video_path}
-    except Exception as e:
-        print(f"Error reading results: {e}")
-        return None
+    # try:
+    #     with open(final_json_path, "r") as f:
+    #         results = json.load(f)
+    #     return {"captions": results, "final_video": final_video_path}
+    # except Exception as e:
+    #     print(f"Error reading results: {e}")
+    #     return None
 
 def get_bounding_box(image):
     alpha_channel = image[:, :, 3]
@@ -202,6 +202,6 @@ if __name__ == "__main__":
     demo = create_demo()
     demo.launch(
         server_name="0.0.0.0",  # Make accessible from other machines
-        server_port=8889,
+        server_port=7861,
         debug=True,
     )
