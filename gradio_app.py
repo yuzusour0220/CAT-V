@@ -202,6 +202,6 @@ if __name__ == "__main__":
     demo = create_demo()
     demo.launch(
         server_name="0.0.0.0",  # Make accessible from other machines
-        server_port=8889,
+        server_port=8890,
         debug=True,
     )
