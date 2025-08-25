@@ -1,7 +1,5 @@
 ![Cover](assets/cover.png)
 
-
-
 Official PyTorch implementation of [Caption Anything in Video: Fine-grained Object-centric Captioning via Spatiotemporal Multimodal Prompting](https://arxiv.org/abs/2504.05541)
 
 ![cat-v-framework](assets/cat-v-framework.png)
@@ -14,31 +12,126 @@ YouTube: [https://youtu.be/2eiPVKXEoxw](https://youtu.be/2eiPVKXEoxw)
 
 ## 🛠️ Getting Started
 
-1. Set up a conda environment (python>= 3.10) using:
+Follow these steps to reproduce the demo or adapt the model to your own videos.
+
+### 1. Create an environment
 
 ```bash
-conda create -n cat2 python=3.10 -y
-conda activate cat2
+conda create -n cat-v python=3.10 -y
+conda activate cat-v
 ```
 
-2. Install the requirements:
+You may also build an environment from `environment.yml`:
+
+```bash
+conda env create -f environment.yml
+conda activate cat-v
+```
+
+### 2. Install dependencies
+
+Install the project and all Python requirements:
 
 ```bash
 pip install -e .
+# or: pip install -r requirements.txt
 ```
 
-3. Download checkpoints:
+Optional cache directories can be set to speed up downloads. Add the following
+to your shell profile if desired:
 
 ```bash
-cd checkpoints && \
-./download_ckpts.sh && \
+export TRANSFORMERS_CACHE=~/.cache/huggingface/transformers
+export TORCH_HOME=~/.cache/torch
+```
+
+### 3. Download checkpoints
+
+```bash
+cd checkpoints
+./download_ckpts.sh
 cd ..
 ```
 
-## 🏃 RUN
+### 4. Verify the installation (optional)
 
+```bash
+python -m scripts.get_boundary --help
 ```
+
+## 🏃 Inference
+
+### Quick demo
+
+Run the full pipeline on the provided example video:
+
+```bash
 bash inference.sh
+```
+
+The script performs three stages—temporal boundary detection, object
+segmentation and caption generation—and stores intermediate and final results
+in the `results/` directory.
+
+### Step-by-step usage
+
+1. **Boundary detection**
+
+   ```bash
+   python -m scripts.get_boundary \
+       --video_paths assets/demo.mp4 \
+       --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
+       --model_path Yongxin-Guo/trace-uni
+   ```
+
+   Produces `results/demo_boundary.json` containing temporal segments.
+
+2. **Object segmentation**
+
+   Provide a text file with bounding boxes (`x_min,y_min,x_max,y_max` per line).
+
+   ```bash
+   python scripts/get_masks.py \
+       --video_path assets/demo.mp4 \
+       --txt_path assets/demo.txt \
+       --model_path checkpoints/sam2.1_hiera_base_plus.pt \
+       --video_output_path results \
+       --save_to_video True
+   ```
+
+   Generates `results/demo_mask.mp4` with the tracked object mask.
+
+3. **Caption generation**
+
+   ```bash
+   python scripts/get_caption.py \
+       --model_path OpenGVLab/InternVL2_5-8B-MPO \
+       --QA_file_path results/demo_boundary.json \
+       --video_folder results \
+       --answers_output_folder results \
+       --extract_frames_method max_frames_num \
+       --max_frames_num 32 \
+       --frames_from video \
+       --final_json_path results/demo_boundary_caption.json \
+       --provide_boundaries
+   ```
+
+   Produces captions for each segment in
+   `results/demo_boundary_caption.json`.
+
+4. **Visualization (optional)**
+
+   ```bash
+   python scripts/get_vis.py results/demo_mask.mp4 results/demo_boundary_caption.json results/demo_boundary_caption.mp4
+   ```
+
+### Gradio demo
+
+Launch an interactive web demo for uploading custom videos and drawing the
+object of interest on the first frame:
+
+```bash
+python gradio_app.py
 ```
 
 
