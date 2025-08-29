@@ -116,6 +116,7 @@ class TraceMistralForCausalLM(MistralForCausalLM, TraceMetaForCausalLM):
         input_ids: torch.LongTensor = None,
         attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,
+        cache_position: Optional[torch.LongTensor] = None,
         past_key_values: Optional[List[torch.FloatTensor]] = None,
         inputs_embeds: Optional[torch.FloatTensor] = None,
         labels: Optional[torch.LongTensor] = None,
@@ -179,6 +180,7 @@ class TraceMistralForCausalLM(MistralForCausalLM, TraceMetaForCausalLM):
             input_ids=input_ids,
             attention_mask=attention_mask,
             position_ids=position_ids,
+            cache_position=cache_position,
             past_key_values=past_key_values,
             inputs_embeds=inputs_embeds,
             use_cache=use_cache,
@@ -335,8 +337,12 @@ class TraceMistralForCausalLM(MistralForCausalLM, TraceMetaForCausalLM):
             _inputs['scores'] = scores
         if heads is not None:
             # switch the lm head if encounter <sync>
-            if "input_ids" in _inputs:
-                new_tokens = _inputs["input_ids"][:, -1]
+            # NOTE: when using inputs_embeds for generation, HF may include
+            # an 'input_ids' key with value None in the prepared inputs.
+            # Guard against that to avoid indexing a NoneType.
+            ids = _inputs.get("input_ids", None)
+            if ids is not None:
+                new_tokens = ids[:, -1]
                 for batch_idx, new_token in enumerate(new_tokens):
                     if int(new_token) in self.swap_tokens:
                         heads[batch_idx] = self.swap_tokens[int(new_token)]

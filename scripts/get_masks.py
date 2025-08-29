@@ -62,6 +62,8 @@ def main(args):
         if osp.isdir(args.video_path):
             frames = sorted([osp.join(args.video_path, f) for f in os.listdir(args.video_path) if f.endswith(".jpg")])
             loaded_frames = [cv2.imread(frame_path) for frame_path in frames]
+            if len(loaded_frames) == 0 or loaded_frames[0] is None:
+                raise ValueError("No frames were loaded from the frame directory.")
             height, width = loaded_frames[0].shape[:2]
         else:
             cap = cv2.VideoCapture(args.video_path)
@@ -72,13 +74,19 @@ def main(args):
                     break
                 loaded_frames.append(frame)
             cap.release()
-            height, width = loaded_frames[0].shape[:2]
-            if len(loaded_frames) == 0:
+            if len(loaded_frames) == 0 or loaded_frames[0] is None:
                 raise ValueError("No frames were loaded from the video.")
+            height, width = loaded_frames[0].shape[:2]
 
     # 出力用 VideoWriter を準備（mp4, 固定フレームレート 30fps）
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(args.video_output_path+f"/{osp.basename(args.video_path).split('.')[0]}_mask.mp4", fourcc, 30, (width, height))
+    if args.save_to_video:
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        out = cv2.VideoWriter(
+            args.video_output_path + f"/{osp.basename(args.video_path).split('.')[0]}_mask.mp4",
+            fourcc,
+            30,
+            (width, height),
+        )
 
     # 推論は autocast と inference_mode で高速化/メモリ効率化
     with torch.inference_mode(), torch.autocast("cuda", dtype=torch.float16):
@@ -89,6 +97,7 @@ def main(args):
         _, _, masks = predictor.add_new_points_or_box(state, box=bbox, frame_idx=0, obj_id=0)
         
         # propagate_in_video は (frame_idx, object_ids, masks) を逐次返すジェネレータ
+        warned_oob = False  # frame index out-of-bounds warning flag
         for frame_idx, object_ids, masks in tqdm(predictor.propagate_in_video(state)):
             # マスクと bbox を可視化する準備
             mask_to_vis = {}
@@ -110,6 +119,17 @@ def main(args):
 
             # ビデオ保存フラグが立っていればフレームにマスクと bbox を描画して書き出す
             if args.save_to_video:
+                # 一部のコーデック/デコーダの差により、predictor 側のフレーム数と
+                # OpenCV で読み込んだフレーム数がズレることがある（末尾数フレーム）。
+                # その場合は安全にスキップする。
+                if frame_idx >= len(loaded_frames):
+                    if not warned_oob:
+                        print(
+                            f"[WARN] Frame index {frame_idx} exceeds loaded frames ({len(loaded_frames)}). "
+                            "Some tail frames will be skipped in the output video."
+                        )
+                        warned_oob = True
+                    continue
                 img = loaded_frames[frame_idx]
                 # マスクを色付きで重ねる（alpha は 0.2）
                 for obj_id, mask in mask_to_vis.items():

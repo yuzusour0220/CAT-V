@@ -9,24 +9,24 @@
 
 set -e
 export CUDA_DEVICE_ORDER=PCI_BUS_ID
-export CUDA_VISIBLE_DEVICES=0,2
+export CUDA_VISIBLE_DEVICES=2,5
 GREEN="\033[32m"
 RESET="\033[0m"
-FRAME_COUNT=32
+FRAME_COUNT=256
 OUTPUT_FOLDER="./results"
 mkdir -p $OUTPUT_FOLDER
-MODEL_PATH="OpenGVLab/InternVL3_5-38B-MPO" # "OpenGVLab/InternVL2-8B"
+MODEL_PATH="OpenGVLab/InternVL3_5-8B-MPO" # "OpenGVLab/InternVL2-8B"
 GET_BOUNDARY_MODEL_PATH="Yongxin-Guo/trace-uni"
 GET_MASK_MODEL_PATH="./checkpoints/sam2.1_hiera_base_plus.pt"
 
 ############################################################################################################
-VIDEO_NAME="preparemeal.mp4"
+VIDEO_NAME="cook_short.mp4"
 VIDEO_FOLDER="./assets/"
-OBJECT_BBOX="preparemeal.txt"
-QA_FILE_PATH="$OUTPUT_FOLDER/preparemeal_boundary.json"
-FINAL_JSON_PATH="$OUTPUT_FOLDER/preparemeal_boundary_caption.json"
-FINAL_VIDEO_PATH="$OUTPUT_FOLDER/preparemeal_boundary_caption.mp4"
-MASKED_VIDEO_PATH="$OUTPUT_FOLDER/preparemeal_mask.mp4"
+OBJECT_BBOX="cook_short.txt"
+QA_FILE_PATH="$OUTPUT_FOLDER/cook_short_boundary.json"
+FINAL_JSON_PATH="$OUTPUT_FOLDER/cook_short_boundary_caption.json"
+FINAL_VIDEO_PATH="$OUTPUT_FOLDER/cook_short_boundary_caption.mp4"
+MASKED_VIDEO_PATH="$OUTPUT_FOLDER/cook_short_mask.mp4"
 ############################################################################################################
 
 VIDEO_PATH="$VIDEO_FOLDER$VIDEO_NAME"
@@ -35,22 +35,22 @@ OBJECT_BBOX_PATH="$VIDEO_FOLDER$OBJECT_BBOX"
 START_TIME=$(date +%s)
 
 # まずdense captioning
-echo -e "${GREEN}Step 1: Parsing...${RESET}"
+# echo -e "${GREEN}Step 1: Parsing...${RESET}"
 
-python -m scripts.get_boundary \
-    --video_paths $VIDEO_PATH \
-    --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
-    --model_path $GET_BOUNDARY_MODEL_PATH
+# python -m scripts.get_boundary \
+#     --video_paths $VIDEO_PATH \
+#     --questions "Localize a series of activity events in the video, output the start and end timestamp for each event, and describe each event with sentences." \
+#     --model_path $GET_BOUNDARY_MODEL_PATH
 
-echo -e "${GREEN}Step 2: Segmentation...${RESET}"
+# echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 
 
-python scripts/get_masks.py \
-    --video_path "$VIDEO_PATH" \
-    --txt_path "$OBJECT_BBOX_PATH" \
-    --model_path "$GET_MASK_MODEL_PATH" \
-    --video_output_path "$OUTPUT_FOLDER" \
-    --save_to_video True
+# python scripts/get_masks.py \
+#     --video_path "$VIDEO_PATH" \
+#     --txt_path "$OBJECT_BBOX_PATH" \
+#     --model_path "$GET_MASK_MODEL_PATH" \
+#     --video_output_path "$OUTPUT_FOLDER" \
+#     --save_to_video True
 
 echo -e "${GREEN}Step 3: Captioning...${RESET}"
 
@@ -63,7 +63,8 @@ python scripts/get_caption.py \
     --max_frames_num "$FRAME_COUNT" \
     --frames_from "video" \
     --final_json_path "$FINAL_JSON_PATH" \
-    --provide_boundaries
+    --provide_boundaries \
+    --save_caption_frames_dir "$OUTPUT_FOLDER/${VIDEO_NAME%.*}_caption_frames"
 
 echo -e "${GREEN}Step 3: Generate visualizations...${RESET}"
 
