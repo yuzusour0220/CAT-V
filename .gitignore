@@ -68,4 +68,5 @@ pretrained/
 publish_models/
 
 singularity/container/
+overlay.img
 
