@@ -10,10 +10,15 @@ pandas
 scipy
 loguru
 einops
-transformers==4.40.1
 timm
 decord
 imageio
 scenedetect
 SentencePiece
 gradio
+transformers>=4.53,<4.54
+tokenizers>=0.20.0
+safetensors>=0.4.3
+huggingface_hub>=0.23
+hydra-core
+omegaconf

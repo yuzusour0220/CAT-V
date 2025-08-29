@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.3.1-cuda12.1-cudnn8-devel
+
+%files
+    . /opt/CAT-V
+
+%post
+    set -eux
+    apt-get update && apt-get install -y --no-install-recommends \
+        git git-lfs ffmpeg libsm6 libxext6 libgl1 ninja-build && \
+        rm -rf /var/lib/apt/lists/*
+
+    python -m pip install --upgrade pip wheel setuptools
+
+    # まず通常の依存を入れる（Torchはベースに入っている＝2.3.1+cu121）
+    pip install --no-cache-dir -r /opt/CAT-V/requirements.txt
+
+    # FlashAttention2：A6000なら wheel をそのまま拾えます（nvcc不要）
+    pip install -U --no-cache-dir flash-attn==2.8.3 --no-build-isolation
+
+    # （任意）高速DL
+    pip install -U --no-cache-dir hf-transfer || true
+
+%environment
+    export CUDA_HOME=/usr/local/cuda
+    export PATH="$CUDA_HOME/bin:$PATH"
+    export LD_LIBRARY_PATH="$CUDA_HOME/lib64:$LD_LIBRARY_PATH"
+    # GPU に合わせる（A100=8.0, A6000=8.6）
+    export TORCH_CUDA_ARCH_LIST="8.0"
+
+%runscript
+    cd /opt/CAT-V
+    exec "$@"

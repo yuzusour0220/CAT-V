@@ -61,6 +61,7 @@ class QADataset(Dataset):
             "Final object-centric paragraph caption: The HO is [attributes], [environment]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. The OH's [final status].",
         ]
         message = ' '.join(message)
+    
 
         self.QAs = []
         for item in data:

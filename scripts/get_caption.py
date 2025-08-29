@@ -133,7 +133,43 @@ if __name__ == "__main__":
     # duration = 0
     for idx, (QA_data, _) in enumerate(tqdm(dataloader)):
         final_question, video_path, short_answer, video, segment, question = unpack_QAs(QA_data)
-        event = f'From {segment[0]} to {segment[1]}s, {short_answer}'
+        final_question = """ Please pay attention to the object highlighted (HO) by colored bounding box and blue mask in the video frames, and generate accurate object-centric caption for the HO. Please make sure in object-centric paragraph caption, the sentences should be detailed and specific, and the subjects of all sentences **MUST be "HO"**. Please follow the format:
+
+
+
+ HO: ...
+
+
+
+ HO's itself attributes: ...
+
+
+
+ All actions done by HO: ...
+
+
+
+ All statuses of HO: ...
+
+
+
+ All other objects interacted with HO: ...
+
+
+
+ All environments/backgrounds of HO: ...
+
+
+
+ All events related to HO: ...
+
+
+
+ Final object-centric paragraph caption: The HO is [attributes], [environment]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. From ... to ...s, the HO [status], [any action], [any status/attribute/environment changes]. The OH's [final status]."""
+        # event = f'From {segment[0]} to {segment[1]}s, {short_answer}'
+        # TAからのモデルからのshort answerを含まない
+        # event = f'From {segment[0]} to {segment[1]}s, event{idx}'
+        event = ""
         event_list.append(event)
         # duration = max(duration, float(segment[1]))
 

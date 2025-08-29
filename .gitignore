@@ -67,3 +67,5 @@ eval_results/
 pretrained/
 publish_models/
 
+singularity/container/
+
