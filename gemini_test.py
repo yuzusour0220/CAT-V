@@ -5,7 +5,9 @@ import base64
 import os
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def generate():
     client = genai.Client(
@@ -17,7 +19,7 @@ def generate():
         types.Content(
             role="user",
             parts=[
-                types.Part.from_text(text="""INSERT_INPUT_HERE"""),
+                types.Part.from_text(text="""What is the capital of Japan?"""),
             ],
         ),
     ]

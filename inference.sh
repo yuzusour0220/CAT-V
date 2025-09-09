@@ -45,12 +45,19 @@ START_TIME=$(date +%s)
 # echo -e "${GREEN}Step 2: Segmentation...${RESET}"
 
 
-# python scripts/get_masks.py \
-#     --video_path "$VIDEO_PATH" \
-#     --txt_path "$OBJECT_BBOX_PATH" \
-#     --model_path "$GET_MASK_MODEL_PATH" \
-#     --video_output_path "$OUTPUT_FOLDER" \
-#     --save_to_video True
+# Optional: choose start time (sec) or frame index for segmentation seed
+START_TIME_SEC=5.0   # e.g., 5.0 seconds
+# START_FRAME_IDX=      # or set an explicit 0-based frame index
+
+python scripts/get_masks.py \
+    --video_path "$VIDEO_PATH" \
+    --txt_path "$OBJECT_BBOX_PATH" \
+    --model_path "$GET_MASK_MODEL_PATH" \
+    --video_output_path "$OUTPUT_FOLDER" \
+    --save_to_video True \
+    --start_time ${START_TIME_SEC:-} \
+    ${START_FRAME_IDX:+--start_frame_idx $START_FRAME_IDX} \
+    --bidirectional
 
 echo -e "${GREEN}Step 3: Captioning...${RESET}"
 

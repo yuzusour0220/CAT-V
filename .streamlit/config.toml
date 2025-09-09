@@ -1,0 +1,4 @@
+[server]
+# Increase max upload size to, say, 4 GB (adjust as needed)
+maxUploadSize = 4096
+maxMessageSize = 4096
