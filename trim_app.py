@@ -5,6 +5,9 @@ import tempfile
 from pathlib import Path
 
 import streamlit as st
+import io
+import zipfile
+from datetime import datetime
 
 
 def human_time(seconds: float) -> str:
@@ -214,23 +217,44 @@ def main():
             st.stop()
 
         dur = probe_duration(in_path)
+        range_method = st.radio("範囲の指定方法", ["スライダー", "数値入力"], horizontal=True)
         if dur is None:
             st.info("長さを取得できなかったため、0秒〜任意の範囲で指定してください。")
-            start_s, end_s = st.slider(
-                "トリミング範囲（秒）",
-                min_value=0.0,
-                max_value=36000.0,
-                value=(0.0, 10.0),
-                step=0.1,
-            )
+            min_v = 0.0
+            max_v = 36000.0
+            default_start, default_end = 0.0, 10.0
+            if range_method == "スライダー":
+                start_s, end_s = st.slider(
+                    "トリミング範囲（秒）",
+                    min_value=min_v,
+                    max_value=max_v,
+                    value=(default_start, default_end),
+                    step=0.1,
+                )
+            else:
+                c1, c2 = st.columns(2)
+                with c1:
+                    start_s = st.number_input("開始（秒）", min_value=min_v, max_value=max_v, value=default_start, step=0.1, format="%.1f")
+                with c2:
+                    end_s = st.number_input("終了（秒）", min_value=min_v, max_value=max_v, value=default_end, step=0.1, format="%.1f")
         else:
-            start_s, end_s = st.slider(
-                f"トリミング範囲（0〜{human_time(dur)}）",
-                min_value=0.0,
-                max_value=float(max(0.1, dur)),
-                value=(0.0, min(10.0, float(dur))),
-                step=0.1,
-            )
+            min_v = 0.0
+            max_v = float(max(0.1, dur))
+            default_start, default_end = 0.0, min(10.0, float(dur))
+            if range_method == "スライダー":
+                start_s, end_s = st.slider(
+                    f"トリミング範囲（0〜{human_time(dur)}）",
+                    min_value=min_v,
+                    max_value=max_v,
+                    value=(default_start, default_end),
+                    step=0.1,
+                )
+            else:
+                c1, c2 = st.columns(2)
+                with c1:
+                    start_s = st.number_input("開始（秒）", min_value=min_v, max_value=max_v, value=default_start, step=0.1, format="%.1f")
+                with c2:
+                    end_s = st.number_input("終了（秒）", min_value=min_v, max_value=max_v, value=default_end, step=0.1, format="%.1f")
 
         # Live preview frames for the selected range
         if ffmpeg_ok and in_path.exists() and end_s > start_s:
@@ -347,13 +371,21 @@ def main():
         max_v = float(max(0.1, min(known)))
         label = f"トリミング範囲（0〜{human_time(max_v)}、最短動画に合わせています）"
 
-    start_s, end_s = st.slider(
-        label,
-        min_value=0.0,
-        max_value=max_v,
-        value=(0.0, min(10.0, max_v)),
-        step=0.1,
-    )
+    range_method2 = st.radio("範囲の指定方法", ["スライダー", "数値入力"], horizontal=True, key="range_method_multi")
+    if range_method2 == "スライダー":
+        start_s, end_s = st.slider(
+            label,
+            min_value=0.0,
+            max_value=max_v,
+            value=(0.0, min(10.0, max_v)),
+            step=0.1,
+        )
+    else:
+        c1, c2 = st.columns(2)
+        with c1:
+            start_s = st.number_input("開始（秒）", min_value=0.0, max_value=max_v, value=0.0, step=0.1, format="%.1f", key="start_multi")
+        with c2:
+            end_s = st.number_input("終了（秒）", min_value=0.0, max_value=max_v, value=min(10.0, max_v), step=0.1, format="%.1f", key="end_multi")
 
     # 代表プレビュー（最初の1本のみ）
     if ffmpeg_ok and end_s > start_s and in_paths:
@@ -423,6 +455,26 @@ def main():
                         st.write("保存先:", str(out_path))
             else:
                 st.warning(f"失敗: {msg}")
+
+        # すべての成功ファイルを ZIP で一括ダウンロード
+        success_paths = [p for (p, ok, _) in results if ok and p.exists()]
+        if success_paths:
+            with io.BytesIO() as mem_zip:
+                with zipfile.ZipFile(mem_zip, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+                    for p in success_paths:
+                        try:
+                            zf.write(p, arcname=p.name)
+                        except Exception:
+                            # 個別に失敗しても他は継続
+                            pass
+                mem_zip.seek(0)
+                zip_name = f"trimmed_videos_{datetime.now():%Y%m%d_%H%M%S}.zip"
+                st.download_button(
+                    "すべてダウンロード (.zip)",
+                    data=mem_zip.getvalue(),
+                    file_name=zip_name,
+                    mime="application/zip",
+                )
 
 
 if __name__ == "__main__":
